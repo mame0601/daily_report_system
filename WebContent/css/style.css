@@ -197,4 +197,18 @@ h3
     font-size: larger;
 }
 
+.follow_button
+{
+    width: 200px;
+    font-size: 20px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color : #00aaff;
+    border-radius: 24px;
+}
+
+.follow_h3
+{
+    display: inline;
+}
 
