@@ -36,7 +36,12 @@ import javax.persistence.Table;
         (
             name = "getMyReportsCount",
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
-        )
+        ),
+    @NamedQuery
+    (
+        name = "getAllTimelineReports",
+        query = "SELECT r FROM Report AS r ORDER BY r.updated_at DESC"
+    )
 })
 
 @Entity

@@ -18,7 +18,15 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "getFollowsCount",
             query = "SELECT COUNT(f) FROM Follow AS f"
-    )
+    ),
+    @NamedQuery(
+            name = "getOneMyFollows",
+            query = "SELECT f FROM Follow As f WHERE f.my_code = :my_code AND f.follows_code = :follows_code"
+            ),
+    @NamedQuery(
+            name = "getMyFollows",
+            query = "SELECT f FROM Follow As f WHERE f.my_code = :my_code"
+            )
 })
 
 @Entity
@@ -32,7 +40,7 @@ public class Follow
     @Column(name ="my_code", nullable = false)
     private String my_code;
 
-    @Column(name = "follows_code", nullable = false, unique = true)
+    @Column(name = "follows_code", nullable = false)
     private String follows_code;
 
     public Integer getId()

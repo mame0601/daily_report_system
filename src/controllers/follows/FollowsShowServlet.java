@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
+import models.Follow;
 import models.Report;
 import utils.DBUtil;
 
@@ -51,12 +53,24 @@ public class FollowsShowServlet extends HttpServlet
         List<Report> reports = em.createNamedQuery("getMyAllReports", Report.class)
                 .setParameter("employee", r.getEmployee())
                 .setFirstResult(15 * (page -1))
-                .setMaxResults(1511)
+                .setMaxResults(15)
                 .getResultList();
 
         long reports_count = (long)em.createNamedQuery("getMyReportsCount", Long.class)
                 .setParameter("employee", r.getEmployee())
                 .getSingleResult();
+
+        Employee _e = (Employee)request.getSession().getAttribute("login_employee");
+        Follow myFollow = new Follow();
+
+        try
+        {
+            myFollow = em.createNamedQuery("getOneMyFollows", Follow.class)
+                    .setParameter("my_code", _e.getCode())
+                    .setParameter("follows_code", r.getEmployee().getCode())
+                    .getSingleResult();
+        }
+        catch(Exception e) {}
 
         em.close();
 
@@ -65,6 +79,17 @@ public class FollowsShowServlet extends HttpServlet
         request.setAttribute("reports_count", reports_count);
         request.setAttribute("page", page);
         request.setAttribute("_token", request.getSession().getId());
+
+        if(myFollow.getMy_code() != null)
+        {
+            System.out.println("データあり");
+            request.setAttribute("myFollow", 1);
+        }
+        else
+        {
+            System.out.println("データなし");
+            request.setAttribute("myFollow", null);
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/timeline/show.jsp");
         rd.forward(request, response);

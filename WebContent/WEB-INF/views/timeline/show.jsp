@@ -9,7 +9,15 @@
                 <h2>従業員　詳細ページ</h2>
                 <h3 class="follow_h3"><c:out value="${report.employee.name }" /></h3>&nbsp;&nbsp;&nbsp;
 
-                <button type="button" class="follow_button">フォロー</button>
+                <c:choose>
+                    <c:when test="${myFollow == null }">
+                        <button type="button" id="btn-a" value="follow" class="follow_button">フォロー</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" id="btn-a" value="follow" class="follow_button">フォロー中</button>
+                    </c:otherwise>
+                </c:choose>
+
                 <br /><br />
 
                 <h4>【<c:out value="${report.employee.name }" />さんの日報　一覧】</h4>
@@ -53,5 +61,88 @@
         </c:choose>
 
         <p><a href="<c:url value="/reports/index" />">一覧に戻る</a></p>
+
+        <input type="hidden" id="_token" value="${_token }" />
+        <input type="hidden" id="my_code" value="${sessionScope.login_employee.code }" />
+        <input type="hidden" id="follows_code" value="${report.employee.code }" />
+        <script>
+            $(document).on('click','#btn-a', function()
+            {
+                // フォローボタンをクリックしたイベントをキャッチする
+                // フォローボタンの表示文字を取得
+                var text = $("#btn-a").text();
+                // ボタンの表示文字を判定する
+                if (text == "フォロー") {
+                // フォローの場合、未登録として扱う
+                    createFollow();
+                } else {
+                // フォローでない場合、登録済みとして扱う
+                    destroyFollow();
+                }
+            });
+
+            function createFollow()
+            {
+                // hiddenタグのトークンを取得
+                var _token = $("#_token").val();
+                var my_code = $("#my_code").val();
+                var follows_code = $("#follows_code").val();
+                var pram =
+                {
+                    '_token' : _token,
+                    'my_code' : my_code,
+                    'follows_code' : follows_code
+                };
+
+                //ajaxでservletにリクエストを送信
+                $.ajax
+                ({
+                    type  : "POST",
+                    url   : "http://localhost:8080/daily_report_system/follows/create",
+                    data  : pram,
+                    async : true,
+                    success : function(data)
+                    {
+                        // buttonタグで表示している文字を変更します
+                        $("#btn-a").text("フォロー中");
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown)
+                    {
+                        alert("リクエスト時に何らかのエラーが発生しました：" + textStatus + ":\n" + errorThrown);
+                    }
+                });
+            }
+            function destroyFollow()
+            {
+                // hiddenタグのトークンを取得
+                var _token = $("#_token").val();
+                var my_code = $("#my_code").val();
+                var follows_code = $("#follows_code").val();
+                var pram =
+                {
+                    '_token' : _token,
+                    'my_code' : my_code,
+                    'follows_code' : follows_code
+                };
+
+                //ajaxでservletにリクエストを送信
+                $.ajax
+                ({
+                    type  : "POST",
+                    url   : "http://localhost:8080/daily_report_system/follows/destroy",
+                    data  : pram,
+                    async : true,
+                    success : function(data)
+                    {
+                        // buttonタグで表示している文字を変更します
+                        $("#btn-a").text("フォロー");
+                    },
+                    error : function(XMLHttpRequest, textStatus, errorThrown)
+                    {
+                        alert("リクエスト時に何らかのエラーが発生しました：" + textStatus + ":\n" + errorThrown);
+                    }
+                });
+            }
+        </script>
     </c:param>
 </c:import>

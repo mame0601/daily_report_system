@@ -1,4 +1,4 @@
-package controllers.reports;
+package controllers.follows;
 
 import java.io.IOException;
 import java.util.List;
@@ -17,15 +17,15 @@ import utils.DBUtil;
 /**
  * Servlet implementation class ReportsIndexServlet
  */
-@WebServlet("/reports/index")
-public class ReportsIndexServlet extends HttpServlet
+@WebServlet("/timeline/index")
+public class FollowsIndexServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReportsIndexServlet()
+    public FollowsIndexServlet()
     {
         super();
     }
@@ -46,7 +46,7 @@ public class ReportsIndexServlet extends HttpServlet
         {
             page = 1;
         }
-        List<Report> reports = em.createNamedQuery("getAllReports", Report.class)
+        List<Report> reports = em.createNamedQuery("getAllTimelineReports", Report.class)
                 .setFirstResult(15 * (page -1))
                 .setMaxResults(15)
                 .getResultList();
@@ -65,7 +65,7 @@ public class ReportsIndexServlet extends HttpServlet
             request.getSession().removeAttribute("flush");
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/index.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/timeline/index.jsp");
         rd.forward(request, response);
     }
 
