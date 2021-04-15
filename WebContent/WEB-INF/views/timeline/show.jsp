@@ -49,7 +49,7 @@
                             <c:out value="${i }" />&nbsp;
                         </c:when>
                         <c:otherwise>
-                            <a href="<c:url value='/timeline/show?page=${i}' />"><c:out value="${i}" /></a>&nbsp;
+                            <a href="<c:url value='/follows/show?id=${report.id}&page=${i }' />"><c:out value="${i}" /></a>&nbsp;
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>

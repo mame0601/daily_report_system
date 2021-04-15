@@ -22,7 +22,7 @@ import utils.DBUtil;
 /**
  * Servlet implementation class ReportsIndexServlet
  */
-@WebServlet("/timeline/index")
+@WebServlet("/follows/index")
 public class FollowsIndexServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
@@ -76,15 +76,25 @@ public class FollowsIndexServlet extends HttpServlet
         }
 
         // 取得結果を格納したリストをソート
-        List<Report> sorted = followingReportsResult.stream()
+        followingReportsResult = followingReportsResult.stream()
                 .sorted(Comparator.comparing(Report::getUpdated_at).reversed())
                 .collect(Collectors.toList());
+
+        List<Report> viewReport = new ArrayList<Report>();
+
+        int _i = 15 * (page -1);
+        while(_i < followingReportsResult.size())
+        {
+            if(_i > 15 * (page -1) + 15)    break;
+            viewReport.add(followingReportsResult.get(_i));
+            _i++;
+        }
 
         long reports_count = (long)followingReportsResult.size();
 
         em.close();
 
-        request.setAttribute("reports", sorted);
+        request.setAttribute("reports", viewReport);
         request.setAttribute("reports_count", reports_count);
         request.setAttribute("page", page);
         if(request.getSession().getAttribute("flush") != null)
