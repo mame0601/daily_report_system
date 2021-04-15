@@ -40,10 +40,11 @@ import javax.persistence.Table;
     @NamedQuery
     (
         name = "getAllTimelineReports",
-        query = "SELECT r FROM Report AS r ORDER BY r.updated_at DESC"
+        query = "SELECT r FROM Report AS r, Employee As e WHERE r.employee.id = e.id AND e.code = :follows_code"
     )
 })
 
+// "SELECT r FROM Report AS r, Employee As e WHERE r.employee = e.id AND e.code = :follows_code"
 @Entity
 public class Report
 {

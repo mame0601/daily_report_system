@@ -1,7 +1,10 @@
 package controllers.follows;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
@@ -11,6 +14,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
+import models.Follow;
 import models.Report;
 import utils.DBUtil;
 
@@ -37,6 +42,9 @@ public class FollowsIndexServlet extends HttpServlet
     {
         EntityManager em = DBUtil.createEntityManager();
 
+        // ログインしている従業員のEmployeeオブジェクトを取得
+        Employee _e = (Employee)request.getSession().getAttribute("login_employee");
+
         int page;
         try
         {
@@ -46,17 +54,37 @@ public class FollowsIndexServlet extends HttpServlet
         {
             page = 1;
         }
-        List<Report> reports = em.createNamedQuery("getAllTimelineReports", Report.class)
-                .setFirstResult(15 * (page -1))
-                .setMaxResults(15)
+
+        // 取得したい日報情報結果リストの変数を用意
+        List<Report> followingReportsResult = new ArrayList<Report>();
+
+        // フォロー管理テーブルに自分の社員番号で検索をする（ログインしている人のフォロー人数レコードを取得する）
+        List<Follow> follows = em.createNamedQuery("getMyFollows", Follow.class)
+                .setParameter("my_code", _e.getCode())
                 .getResultList();
 
-        long reports_count = (long)em.createNamedQuery("getReportsCount", Long.class)
-                .getSingleResult();
+        // 取得したフォロー情報を繰り返して日報情報を取得
+        for(Follow follow : follows)
+        {
+            // フォロー情報のフォローされている社員番号をもとにレポートテーブルを検索
+            List<Report> followingReports = em.createNamedQuery("getAllTimelineReports", Report.class)
+                    .setParameter("follows_code", follow.getFollows_code())
+                    .getResultList();
+
+            // 取得した情報を followingReportsResult に追加
+            followingReportsResult.addAll(followingReports);
+        }
+
+        // 取得結果を格納したリストをソート
+        List<Report> sorted = followingReportsResult.stream()
+                .sorted(Comparator.comparing(Report::getUpdated_at).reversed())
+                .collect(Collectors.toList());
+
+        long reports_count = (long)followingReportsResult.size();
 
         em.close();
 
-        request.setAttribute("reports", reports);
+        request.setAttribute("reports", sorted);
         request.setAttribute("reports_count", reports_count);
         request.setAttribute("page", page);
         if(request.getSession().getAttribute("flush") != null)

@@ -40,6 +40,7 @@ public class FollowsShowServlet extends HttpServlet
         EntityManager em = DBUtil.createEntityManager();
 
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
+        Employee _e = (Employee)request.getSession().getAttribute("login_employee");
 
         int page;
         try
@@ -60,7 +61,6 @@ public class FollowsShowServlet extends HttpServlet
                 .setParameter("employee", r.getEmployee())
                 .getSingleResult();
 
-        Employee _e = (Employee)request.getSession().getAttribute("login_employee");
         Follow myFollow = new Follow();
 
         try
