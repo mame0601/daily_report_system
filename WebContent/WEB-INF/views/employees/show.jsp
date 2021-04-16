@@ -24,6 +24,8 @@
                             <td>
                                 <c:choose>
                                     <c:when test="${employee.admin_flag == 1}">　管理者</c:when>
+                                    <c:when test="${employee.admin_flag == 2}">　課長</c:when>
+                                    <c:when test="${employee.admin_flag == 3}">　部長</c:when>
                                     <c:otherwise>　一般</c:otherwise>
                                 </c:choose>
                             </td>

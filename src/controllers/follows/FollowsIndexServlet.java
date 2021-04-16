@@ -85,7 +85,7 @@ public class FollowsIndexServlet extends HttpServlet
         int _i = 15 * (page -1);
         while(_i < followingReportsResult.size())
         {
-            if(_i > 15 * (page -1) + 15)    break;
+            if(_i > 15 * (page -1) + 15 - 1)    break;
             viewReport.add(followingReportsResult.get(_i));
             _i++;
         }
