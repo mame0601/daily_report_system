@@ -46,6 +46,9 @@ public class EmployeesCreateServlet extends HttpServlet
             Employee e = new Employee();
 
             e.setCode(request.getParameter("code"));
+
+            // グループIDはとりあえず空で登録
+            e.setGroup_id("");
             e.setName(request.getParameter("name"));
             e.setPassword
                     (

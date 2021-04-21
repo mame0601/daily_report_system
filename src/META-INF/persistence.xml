@@ -5,6 +5,8 @@
 		<class>models.Employee</class>
 		<class>models.Report</class>
 		<class>models.Follow</class>
+		<class>models.Group</class>
+		<class>models.GroupUser</class>
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost/daily_report_system?useSSL=false&amp;useUnicode=true&amp;characterEncoding=utf8"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

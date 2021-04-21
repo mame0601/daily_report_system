@@ -50,6 +50,18 @@ public class ReportsUpdateServlet extends HttpServlet
             r.setContent(request.getParameter("content"));
             r.setUpdated_at(new Timestamp(System.currentTimeMillis()));
 
+            // 承認／未承認チェック
+            if(r.getEmployee().getAdmin_flag() == 1 || r.getEmployee().getAdmin_flag() == 3)
+            {
+                // 管理者と部長の場合、自動的に承認済みにする
+                r.setApproval(true);
+            }
+            else
+            {
+                // 一般と課長の場合未承認
+                r.setApproval(false);
+            }
+
             List<String> errors = ReportValidator.validate(r);
             if(errors.size() > 0)
             {

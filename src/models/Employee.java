@@ -41,12 +41,16 @@ public class Employee
     @Column(name = "code", nullable = false, unique = true)
     private String code;
 
+    @Column(name = "group_id", nullable = false)
+    private String group_id;
+
     @Column(name = "name", nullable = false)
     private String name;
 
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
+    // 0...一般 1...管理者 2...課長 3...部長
     @Column(name = "admin_flag", nullable = false)
     private Integer admin_flag;
 
@@ -63,6 +67,16 @@ public class Employee
     public Integer getId()
     {
         return id;
+    }
+
+    public String getGroup_id()
+    {
+        return group_id;
+    }
+
+    public void setGroup_id(String group_id)
+    {
+        this.group_id = group_id;
     }
 
     public void setId(Integer id)

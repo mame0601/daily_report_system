@@ -21,8 +21,26 @@
 
                 <c:forEach var="employee" items="${employees}" varStatus="status">
                     <tr class="row${status.count % 2}">
-                        <td><c:out value="${employee.code}" /></td>
-                        <td><c:out value="${employee.name}" /></td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employee.delete_flag == 1}">
+                                    <s><c:out value="${employee.code}" /></s>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${employee.code}" />
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
+                        <td>
+                            <c:choose>
+                                <c:when test="${employee.delete_flag == 1}">
+                                    <s><c:out value="${employee.name}" /></s>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:out value="${employee.name}" />
+                                </c:otherwise>
+                            </c:choose>
+                        </td>
                         <td>
                             <c:choose>
                                 <c:when test="${employee.delete_flag == 1}">
@@ -55,6 +73,7 @@
 
         </div>
         <p><a href="<c:url value='/employees/new' />">新規従業員の登録</a></p>
+        <p><a href="<c:url value="/groups/new" />">新規グループの作成</a>
 
     </c:param>
 </c:import>

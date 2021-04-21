@@ -16,6 +16,20 @@
                             <td>　<c:out value="${employee.code}" /></td>
                         </tr>
                         <tr>
+                            <th>所属グループ</th>
+                            <td>　
+                                <c:choose>
+                                <c:when test='${employee.group_id != ""}'>
+                                    <c:out value="${employee.group_id}" />
+                                </c:when>
+                                <c:otherwise>
+                                    無所属
+                                </c:otherwise>
+                                </c:choose>
+                            </td>
+                        </tr>
+                        <tr>
+                        <tr>
                             <th>氏名</th>
                             <td>　<c:out value="${employee.name}" /></td>
                         </tr>

@@ -73,9 +73,23 @@ public class Report
     @Column(name = "updated_at", nullable =false)
     private Timestamp updated_at;
 
+    @Column(name = "approval", nullable = false)
+    private boolean approval;
+
+
     public Integer getId()
     {
         return id;
+    }
+
+    public boolean isApproval()
+    {
+        return approval;
+    }
+
+    public void setApproval(boolean approval)
+    {
+        this.approval = approval;
     }
 
     public void setId(Integer id)
