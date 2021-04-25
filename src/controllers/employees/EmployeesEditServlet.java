@@ -17,14 +17,14 @@ import utils.DBUtil;
  * Servlet implementation class EmployeeEditServlet
  */
 @WebServlet("/employees/edit")
-public class EmployeeEditServlet extends HttpServlet
+public class EmployeesEditServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeeEditServlet()
+    public EmployeesEditServlet()
     {
         super();
     }

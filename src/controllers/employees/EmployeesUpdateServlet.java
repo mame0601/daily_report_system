@@ -21,14 +21,14 @@ import validators.EmployeeValidator;
  * Servlet implementation class EmployeeUpdateServlet
  */
 @WebServlet("/employees/update")
-public class EmployeeUpdateServlet extends HttpServlet
+public class EmployeesUpdateServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeeUpdateServlet()
+    public EmployeesUpdateServlet()
     {
         super();
     }

@@ -18,14 +18,14 @@ import utils.DBUtil;
  * Servlet implementation class EmployeeIndexServlet
  */
 @WebServlet("/employees/index")
-public class EmployeeIndexServlet extends HttpServlet
+public class EmployeesIndexServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public EmployeeIndexServlet()
+    public EmployeesIndexServlet()
     {
         super();
     }
