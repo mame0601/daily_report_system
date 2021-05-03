@@ -14,7 +14,7 @@ public class GroupUserValidator
     {
         List<String> errors = new ArrayList<String>();
 
-        String id_error = validateId(g.getEmployee().getId(), idDuplicateCheckFlag);
+        String id_error = validateId(g.getEmployee().getId(), g.getGroup_id(), idDuplicateCheckFlag);
         if(!id_error.equals(""))
         {
             errors.add(id_error);
@@ -23,24 +23,40 @@ public class GroupUserValidator
         return errors;
     }
 
-    // グループID
-    private static String validateId(Integer id, Boolean idDuplicateCheckFlag)
+    // ユーザーID
+    private static String validateId(Integer id, String group_id, Boolean idDuplicateCheckFlag)
     {
         // 必須入力チェック
         if(id == null || id.equals(""))
         {
-            return "グループIDを入力してください。";
+            return "ユーザーを入力してください。";
         }
 
-        // すでに登録されているグループIDとの重複チェック
+        // すでに登録されているユーザーIDとの重複チェック
         if(idDuplicateCheckFlag)
         {
             EntityManager em = DBUtil.createEntityManager();
-            long groups_count = (long)em.createNamedQuery("checkRegisteredUserId", Long.class).setParameter("id", id).getSingleResult();
+
+            GroupUser groupusers = null;
+
+            try{
+                groupusers = (GroupUser)em.createNamedQuery("checkRegisteredUserId", GroupUser.class)
+                        .setParameter("id", id)
+                        .getSingleResult();
+            }
+            catch(Exception e) {}
+
             em.close();
-            if(groups_count > 0)
+            if(groupusers != null)
             {
-                return "入力されたグループIDの情報はすでに存在しています。";
+                if(groupusers.getGroup_id().equals(group_id))
+                {
+                    return "入力されたユーザーはすでに登録されています。";
+                }
+                else
+                {
+                    return "入力されたユーザーは別のグループに登録されています。";
+                }
             }
         }
 

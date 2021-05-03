@@ -23,7 +23,7 @@ import javax.persistence.Table;
     ),
     @NamedQuery(
             name = "checkRegisteredUserId",
-            query = "SELECT COUNT(g) FROM GroupUser AS g WHERE g.employee.id = :id"
+            query = "SELECT g FROM GroupUser AS g WHERE g.employee.id = :id"
     )
 })
 @Entity
