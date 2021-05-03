@@ -1,7 +1,9 @@
 package controllers.employees;
 
 import java.io.IOException;
+import java.util.List;
 
+import javax.persistence.EntityManager;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.Group;
+import utils.DBUtil;
 
 /**
  * Servlet implementation class EmployeesNewServlet
@@ -32,6 +36,15 @@ public class EmployeesNewServlet extends HttpServlet
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
+        EntityManager em = DBUtil.createEntityManager();
+
+        List <Group> groups = em.createNamedQuery("getAllGroups", Group.class)
+                .setFirstResult(0)
+                .setMaxResults(999)
+                .getResultList();
+        em.close();
+        request.setAttribute("groups", groups);
+
         request.setAttribute("_token", request.getSession().getId());
         request.setAttribute("employee", new Employee());
 

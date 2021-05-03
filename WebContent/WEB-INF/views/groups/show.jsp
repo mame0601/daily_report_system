@@ -7,7 +7,7 @@
 
         <c:choose>
             <c:when test="${group != null}">
-                <h2>グループID : ${group.id} のグループ詳細画面</h2>
+                <h2>グループ詳細画面</h2>
 
                 <table>
                     <tbody>
@@ -25,6 +25,58 @@
                 <c:if test="${employee.admin_flag == 1 }">
                     <p><a href="<c:url value='/groups/edit?id=${group.id}' />">このグループ情報を編集する</a></p>
                 </c:if>
+
+
+                <br /><br /><br />
+                <h2>グループに所属する人　一覧</h2>
+
+                <table id="employee_list">
+                    <tbody>
+                        <tr>
+                            <th>ユーザーID</th>
+                            <th>ユーザー名</th>
+                            <th>削除</th>
+                        </tr>
+
+                        <c:forEach var="groupuser" items="${groupusers}" varStatus="status">
+                            <tr class="row${status.count % 2}">
+                                <td>
+                                    <c:out value="${groupuser.employee.id}" />
+                                </td>
+                                <td>
+                                    <c:out value="${groupuser.employee.name}" />
+                                </td>
+                                <td>
+                                    ✖
+                                </td>
+                            </tr>
+                        </c:forEach>
+
+                    </tbody>
+                </table>
+
+                <div id="pagination">
+
+                    （全 ${groupusers_count} 件）<br />
+                    <c:forEach var ="i" begin="1" end="${((groupusers_count -1) / 15) + 1 }" step="1">
+                        <c:choose>
+                            <c:when test="${i == page}">
+                                <c:out value="${i}" />&nbsp;
+                            </c:when>
+                            <c:otherwise>
+                                <a href="<c:url value='/groups/index?page=${i}' />"><c:out value="${i}" /></a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
+
+                </div>
+
+                <c:if test="${employee.admin_flag == 1 }">
+                    <p><a href="<c:url value='/groupusers/new?id=${group.id}' />">ユーザー所属追加</a></p>
+                </c:if>
+
+
+
             </c:when>
             <c:otherwise>
                 <h2>お探しのデータは見つかりませんでした。</h2>

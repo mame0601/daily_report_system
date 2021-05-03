@@ -28,6 +28,10 @@ import javax.persistence.Table;
     @NamedQuery(
             name = "checkLoginCodeAndPassword",
             query = "SELECT e FROM Employee AS e WHERE e.delete_flag = 0 AND e.code = :code AND e.password = :pass"
+    ),
+    @NamedQuery(
+            name = "getEmpryGroupIdAllEmployees",
+            query = "SELECT e FROM Employee AS e WHERE NOT e.group_id = :group_id AND NOT e.admin_flag = 1 AND e.delete_flag = 0 ORDER BY e.id DESC"
     )
 })
 @Entity
@@ -41,7 +45,7 @@ public class Employee
     @Column(name = "code", nullable = false, unique = true)
     private String code;
 
-    @Column(name = "group_id", nullable = false)
+    @Column(name = "group_id", nullable = true)
     private String group_id;
 
     @Column(name = "name", nullable = false)
@@ -50,7 +54,7 @@ public class Employee
     @Column(name = "password", length = 64, nullable = false)
     private String password;
 
-    // 0...一般 1...管理者 2...課長 3...部長
+    // 0...一般 1...管理者
     @Column(name = "admin_flag", nullable = false)
     private Integer admin_flag;
 

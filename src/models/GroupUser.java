@@ -2,19 +2,55 @@ package models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Table(name = "groupuser")
+@NamedQueries({
+    @NamedQuery(
+        name = "getMyAllGroupUsers",
+        query = "SELECT g FROM GroupUser AS g WHERE g.group_id = :group_id ORDER BY g.group_id DESC"
+    ),
+    @NamedQuery(
+            name = "getMyGroupUsersCount",
+            query = "SELECT COUNT(g) FROM GroupUser AS g WHERE g.group_id = :group_id"
+    ),
+    @NamedQuery(
+            name = "checkRegisteredUserId",
+            query = "SELECT COUNT(g) FROM GroupUser AS g WHERE g.employee.id = :id"
+    )
+})
 @Entity
 public class GroupUser
 {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
     @Column(name = "group_id", nullable =false)
     private String group_id;
 
-    @Column(name = "user_id", nullable = false, unique = true)
-    private Integer user_id;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private Employee employee;
+
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(Integer id)
+    {
+        this.id = id;
+    }
 
     public String getGroup_id()
     {
@@ -26,14 +62,14 @@ public class GroupUser
         this.group_id = group_id;
     }
 
-    public Integer getUser_id()
+    public Employee getEmployee()
     {
-        return user_id;
+        return employee;
     }
 
-    public void setUser_id(Integer user_id)
+    public void setEmployee(Employee employee)
     {
-        this.user_id = user_id;
+        this.employee = employee;
     }
 
 

@@ -64,14 +64,14 @@ public class ReportsCreateSetvlet extends HttpServlet
             r.setUpdated_at(currentTime);
 
             // 承認／未承認チェック
-            if(r.getEmployee().getAdmin_flag() == 1 || r.getEmployee().getAdmin_flag() == 3)
+            if(r.getEmployee().getAdmin_flag() == 1)
             {
-                // 管理者と部長の場合、自動的に承認済みにする
+                // 管理者の場合、自動的に承認済みにする
                 r.setApproval(true);
             }
             else
             {
-                // 一般と課長の場合未承認
+                // 一般の場合未承認
                 r.setApproval(false);
             }
 
