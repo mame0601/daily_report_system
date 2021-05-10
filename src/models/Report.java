@@ -38,10 +38,30 @@ import javax.persistence.Table;
             query = "SELECT COUNT(r) FROM Report AS r WHERE r.employee = :employee"
         ),
     @NamedQuery
-    (
-        name = "getAllTimelineReports",
-        query = "SELECT r FROM Report AS r, Employee As e WHERE r.employee.id = e.id AND e.code = :follows_code"
-    )
+        (
+            name = "getAllTimelineReports",
+            query = "SELECT r FROM Report AS r, Employee As e WHERE r.employee.id = e.id AND e.code = :follows_code"
+        ),
+    @NamedQuery
+        (
+            name = "getAllUnapprovedReports",
+            query = "SELECT r FROM Report AS r WHERE r.approval = false AND r.employee.group_id = :group_id"
+        ),
+    @NamedQuery
+        (
+            name = "getUnapprovedReportsCount",
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.approval = false AND r.employee.group_id = :group_id"
+        ),
+    @NamedQuery
+        (
+            name = "getAllApprovalsReports",
+            query = "SELECT r FROM Report AS r WHERE r.approval = true AND r.employee.group_id = :group_id"
+        ),
+    @NamedQuery
+        (
+            name = "getApprovalsReportsCount",
+            query = "SELECT COUNT(r) FROM Report AS r WHERE r.approval = true AND r.employee.group_id = :group_id"
+        )
 })
 
 // "SELECT r FROM Report AS r, Employee As e WHERE r.employee = e.id AND e.code = :follows_code"

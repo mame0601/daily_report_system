@@ -35,7 +35,9 @@
                         <tr>
                             <th>ユーザーID</th>
                             <th>ユーザー名</th>
-                            <th>削除</th>
+                            <c:if test="${sessionScope.login_employee.admin_flag == 1}">
+                                <th>削除</th>
+                            </c:if>
                         </tr>
 
                         <c:forEach var="groupuser" items="${groupusers}" varStatus="status">
@@ -46,9 +48,25 @@
                                 <td>
                                     <c:out value="${groupuser.employee.name}" />
                                 </td>
-                                <td>
-                                    ✖
-                                </td>
+                                <c:if test="${sessionScope.login_employee.admin_flag == 1}">
+                                    <td>
+                                        <a href="#" onclick="confirmDestroy();">✖</a>
+                                        <form method="POST" action="<c:url value='/groupusers/destroy' />">
+                                            <input type="hidden" name="_token" value="${_token}" />
+                                            <input type="hidden" name="id" value="${groupuser.employee.id }">
+                                            <input type="hidden" name="group_id" value="${groupuser.group_id }">
+                                        </form>
+                                        <script>
+                                            function confirmDestroy()
+                                            {
+                                                if(confirm("本当に削除してよろしいですか？"))
+                                                {
+                                                    document.forms[0].submit();
+                                                }
+                                            }
+                                        </script>
+                                    </td>
+                                </c:if>
                             </tr>
                         </c:forEach>
 
@@ -74,8 +92,6 @@
                 <c:if test="${employee.admin_flag == 1 }">
                     <p><a href="<c:url value='/groupusers/new?id=${group.id}' />">ユーザー所属追加</a></p>
                 </c:if>
-
-
 
             </c:when>
             <c:otherwise>

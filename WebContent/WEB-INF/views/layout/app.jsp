@@ -28,6 +28,10 @@
                         <a href="<c:url value='/groups/index' />">グループ管理</a>&nbsp;
                         <a href="<c:url value='/reports/index' />">日報管理</a>&nbsp;
                         <a href="<c:url value='/follows/index' />">タイムライン</a>&nbsp;
+                        <c:if test="${sessionScope.login_boss != null}">
+                            <a href="<c:url value='/unapproved/index' />">未承認日報一覧</a>&nbsp;
+                            <a href="<c:url value='/approvals/index' />">承認済み日報一覧</a>&nbsp;
+                        </c:if>
                     </c:if>
                 </div>
                 <c:if test="${sessionScope.login_employee != null}">

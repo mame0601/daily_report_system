@@ -1,4 +1,4 @@
-package controllers.groups;
+package controllers.unapproved;
 
 import java.io.IOException;
 import java.util.List;
@@ -11,23 +11,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Employee;
-import models.Group;
 import models.GroupUser;
+import models.Report;
 import utils.DBUtil;
 
 /**
- * Servlet implementation class EmployeesShowServlet
+ * Servlet implementation class TopPageIndexServlet
  */
-@WebServlet("/groups/show")
-public class GroupsShowServlet extends HttpServlet
+@WebServlet("/unapproved/index")
+public class UnapprovedIndexServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GroupsShowServlet()
+    public UnapprovedIndexServlet()
     {
         super();
     }
@@ -37,42 +36,34 @@ public class GroupsShowServlet extends HttpServlet
      */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        // グループ詳細画面（show）部分
         EntityManager em = DBUtil.createEntityManager();
 
-        Employee e = (Employee)request.getSession().getAttribute("login_employee");
-        Group g = em.find(Group.class, request.getParameter("id"));
+        GroupUser login_boss = (GroupUser)request.getSession().getAttribute("login_boss");
 
-
-        // グループに所属する人一覧（index部分）
-        int page = 1;
+        int page;
         try
         {
             page = Integer.parseInt(request.getParameter("page"));
         }
-        catch(NumberFormatException _e) {}
-
-        List <GroupUser> groupusers = em.createNamedQuery("getMyAllGroupUsers", GroupUser.class)
-                .setParameter("group_id", g.getId())
+        catch(Exception e)
+        {
+            page = 1;
+        }
+        List<Report> reports = em.createNamedQuery("getAllUnapprovedReports", Report.class)
+                .setParameter("group_id", login_boss.getGroup_id())
                 .setFirstResult(15 * (page -1))
                 .setMaxResults(15)
                 .getResultList();
 
-        long groupusers_count = (long)em.createNamedQuery("getMyGroupUsersCount", Long.class)
-                .setParameter("group_id", g.getId())
+        long reports_count = (long)em.createNamedQuery("getUnapprovedReportsCount", Long.class)
+                .setParameter("group_id", login_boss.getGroup_id())
                 .getSingleResult();
 
         em.close();
 
-        // show部分
-        request.setAttribute("employee", e);
-        request.setAttribute("group", g);
-
-        // group_users部分
-        request.setAttribute("groupusers", groupusers);
-        request.setAttribute("groupusers_count", groupusers_count);
+        request.setAttribute("reports", reports);
+        request.setAttribute("reports_count", reports_count);
         request.setAttribute("page", page);
-        request.setAttribute("_token", request.getSession().getId());
 
         if(request.getSession().getAttribute("flush") != null)
         {
@@ -80,8 +71,7 @@ public class GroupsShowServlet extends HttpServlet
             request.getSession().removeAttribute("flush");
         }
 
-        System.out.println("test");
-        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/groups/show.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/unappproved/index.jsp");
         rd.forward(request, response);
     }
 

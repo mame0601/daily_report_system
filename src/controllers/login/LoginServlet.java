@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Employee;
+import models.GroupUser;
 import utils.DBUtil;
 import utils.EncryptUtil;
 
@@ -61,6 +62,7 @@ public class LoginServlet extends HttpServlet
         String plain_pass = request.getParameter("password");
 
         Employee e = null;
+        GroupUser g = null;
 
         if(code != null && !code.equals("") && plain_pass != null && !plain_pass.equals(""))
         {
@@ -82,12 +84,18 @@ public class LoginServlet extends HttpServlet
             }
             catch(NoResultException ex) {}
 
-            em.close();
-
             if(e != null)
             {
                 check_result = true;
+                try
+                {
+                    g = em.createNamedQuery("checkRegisteredUserId", GroupUser.class)
+                            .setParameter("employee", e)
+                            .getSingleResult();
+                }
+                catch(Exception ex) {}
             }
+            em.close();
         }
 
         if(!check_result)
@@ -104,6 +112,12 @@ public class LoginServlet extends HttpServlet
         {
             // 認証できたらログイン状態にしてトップページへリダイレクト
             request.getSession().setAttribute("login_employee", e);
+
+            // 自身がグループに所属していたらセッションスコープにユーザーをセット
+            if(g != null)
+            {
+                request.getSession().setAttribute("login_boss", g);
+            }
 
             request.getSession().setAttribute("flush", "ログインしました。");
             response.sendRedirect(request.getContextPath() + "/");

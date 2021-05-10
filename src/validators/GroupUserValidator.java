@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import models.Employee;
 import models.GroupUser;
 import utils.DBUtil;
 
@@ -14,7 +15,7 @@ public class GroupUserValidator
     {
         List<String> errors = new ArrayList<String>();
 
-        String id_error = validateId(g.getEmployee().getId(), g.getGroup_id(), idDuplicateCheckFlag);
+        String id_error = validateId(g.getEmployee(), g.getGroup_id(), idDuplicateCheckFlag);
         if(!id_error.equals(""))
         {
             errors.add(id_error);
@@ -24,10 +25,10 @@ public class GroupUserValidator
     }
 
     // ユーザーID
-    private static String validateId(Integer id, String group_id, Boolean idDuplicateCheckFlag)
+    private static String validateId(Employee employee, String group_id, Boolean idDuplicateCheckFlag)
     {
         // 必須入力チェック
-        if(id == null || id.equals(""))
+        if(employee == null)
         {
             return "ユーザーを入力してください。";
         }
@@ -41,7 +42,7 @@ public class GroupUserValidator
 
             try{
                 groupusers = (GroupUser)em.createNamedQuery("checkRegisteredUserId", GroupUser.class)
-                        .setParameter("id", id)
+                        .setParameter("employee", employee)
                         .getSingleResult();
             }
             catch(Exception e) {}
