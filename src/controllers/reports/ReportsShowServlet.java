@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import models.Employee;
+import models.Favorite;
 import models.Report;
 import utils.DBUtil;
 
@@ -38,10 +40,36 @@ public class ReportsShowServlet extends HttpServlet
 
         Report r = em.find(Report.class, Integer.parseInt(request.getParameter("id")));
 
+        // いいね件数を取得
+        long favorites_count = (long)em.createNamedQuery("getMyReportsFavoritesCount", Long.class)
+                    .setParameter("report", r.getId())
+                    .getSingleResult();
+
+        // 自分がいいね済みの日報か確認する
+        Favorite myFavorite = new Favorite();
+        Employee e = (Employee)request.getSession().getAttribute("login_employee");
+        try
+        {
+            myFavorite = em.createNamedQuery("getMyFavorites", Favorite.class)
+                    .setParameter("employee_id", e.getId())
+                    .setParameter("report_id", r.getId())
+                    .getSingleResult();
+        }
+        catch(Exception _e) {}
         em.close();
 
         request.setAttribute("report", r);
+        request.setAttribute("favorites_count", favorites_count);
         request.setAttribute("_token", request.getSession().getId());
+
+        if(myFavorite.getReport_id() != null)
+        {
+            request.setAttribute("myFavorite", 1);
+        }
+        else
+        {
+            request.setAttribute("myFavorite", null);
+        }
 
         RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/reports/show.jsp");
         rd.forward(request, response);

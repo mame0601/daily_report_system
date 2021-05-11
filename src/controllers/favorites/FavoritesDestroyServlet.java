@@ -1,4 +1,4 @@
-package controllers.follows;
+package controllers.favorites;
 
 import java.io.IOException;
 
@@ -9,21 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import models.Follow;
+import models.Favorite;
 import utils.DBUtil;
 
 /**
  * Servlet implementation class FollowsCreateServlet
  */
-@WebServlet(urlPatterns={"/follows/destroy"})
-public class FollowsDestroyServlet extends HttpServlet
+@WebServlet(urlPatterns={"/favorites/destroy"})
+public class FavoritesDestroyServlet extends HttpServlet
 {
     private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public FollowsDestroyServlet()
+    public FavoritesDestroyServlet()
     {
         super();
     }
@@ -41,21 +41,21 @@ public class FollowsDestroyServlet extends HttpServlet
             {
                 EntityManager em = DBUtil.createEntityManager();
 
-                Follow myFollow = new Follow();
+                Favorite myFavorite = new Favorite();
                 try
                 {
-                    myFollow = em.createNamedQuery("getOneMyFollows", Follow.class)
-                            .setParameter("my_code", request.getParameter("my_code"))
-                            .setParameter("follows_code", request.getParameter("follows_code"))
+                    myFavorite = em.createNamedQuery("getMyFavorites", Favorite.class)
+                            .setParameter("employee_id", Integer.parseInt(request.getParameter("my_id")))
+                            .setParameter("report_id", Integer.parseInt(request.getParameter("reports_id")))
                             .getSingleResult();
                 }
-                catch(Exception e) {}
+                catch(Exception _e) {}
 
-                if(myFollow.getMy_code() != null)
+                if(myFavorite != null)
                 {
                     System.out.println("データ削除");
                     em.getTransaction().begin();
-                    em.remove(myFollow);  // データ削除
+                    em.remove(myFavorite);  // データ削除
                     em.getTransaction().commit();
                 }
                 em.close();
