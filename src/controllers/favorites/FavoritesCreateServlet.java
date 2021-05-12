@@ -49,6 +49,13 @@ public class FavoritesCreateServlet extends HttpServlet
                 em.getTransaction().begin();
                 em.persist(f);
                 em.getTransaction().commit();
+                
+                // いいね件数を取得
+                long favorites_count = (long)em.createNamedQuery("getMyReportsFavoritesCount", Long.class)
+                            .setParameter("report", Integer.parseInt(request.getParameter("reports_id")))
+                            .getSingleResult();
+                request.setAttribute("favorites_count", favorites_count);
+                
                 em.close();
             }
         }

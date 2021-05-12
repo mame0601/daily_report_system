@@ -57,6 +57,12 @@ public class FavoritesDestroyServlet extends HttpServlet
                     em.getTransaction().begin();
                     em.remove(myFavorite);  // データ削除
                     em.getTransaction().commit();
+
+                    // いいね件数を取得
+                    long favorites_count = (long)em.createNamedQuery("getMyReportsFavoritesCount", Long.class)
+                                .setParameter("report", Integer.parseInt(request.getParameter("reports_id")))
+                                .getSingleResult();
+                    request.setAttribute("favorites_count", favorites_count);
                 }
                 em.close();
             }
