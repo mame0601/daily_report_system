@@ -98,7 +98,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "/daily_report_system/follows/create",
+                    url   : "https://daily-report-system-mame.herokuapp.com/follows/create",
                     data  : pram,
                     async : true,
                     success : function(data)
@@ -129,7 +129,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "/daily_report_system/follows/destroy",
+                    url   : "https://daily-report-system-mame.herokuapp.com/follows/destroy",
                     data  : pram,
                     async : true,
                     success : function(data)

@@ -106,7 +106,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "/daily_report_system/favorites/create",
+                    url   : "https://daily-report-system-mame.herokuapp.com/favorites/create",
                     data  : pram,
                     async : true,
                     success : function(data)
@@ -141,7 +141,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "/daily_report_system/favorites/destroy",
+                    url   : "https://daily-report-system-mame.herokuapp.com/favorites/destroy",
                     data  : pram,
                     async : true,
                     success : function(data)
