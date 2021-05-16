@@ -9,8 +9,7 @@ Techacademyの最終課題 "日報管理システム" をより拡張したWeb�
 日報の承認機能のためグループが存在し、配属された従業員は新規登録の際選択した承認先と同じ従業員の日報のみを閲覧、
 また承認を行うことができます。
 
-#DEMO
+# DEMO
 
 heroku URL
-
 https://daily-report-system-mame.herokuapp.com/
