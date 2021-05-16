@@ -98,7 +98,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "http://localhost:8080/daily_report_system/follows/create",
+                    url   : "/daily_report_system/follows/create",
                     data  : pram,
                     async : true,
                     success : function(data)
@@ -129,7 +129,7 @@
                 $.ajax
                 ({
                     type  : "POST",
-                    url   : "http://localhost:8080/daily_report_system/follows/destroy",
+                    url   : "/daily_report_system/follows/destroy",
                     data  : pram,
                     async : true,
                     success : function(data)
