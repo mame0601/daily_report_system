@@ -11,5 +11,23 @@ Techacademyの最終課題 "日報管理システム" をより拡張したWeb�
 
 # DEMO
 
-heroku URL
-https://daily-report-system-mame.herokuapp.com/
+heroku URL: https://daily-report-system-mame.herokuapp.com/
+
+管理者としてのログイン方法
+
+社員番号: admin
+パスワード: root
+
+その他従業員としてのログイン方法
+
+社員番号: 従業員管理での社員番号
+パスワード: a
+
+# Dependency
+- Java SE Development Kit 11
+- Eclipse Java EE IDE for Web Developers 4.6.3
+- MySQL 5.7
+- Apache Maven 4.0
+- MySQL JDBC Driver 5.1.45
+- Hibernate 5.2.13.Final
+- jQuery 3.6.0
