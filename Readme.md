@@ -23,6 +23,12 @@ heroku URL: https://daily-report-system-mame.herokuapp.com/
 社員番号: 従業員管理での社員番号
 パスワード: a
 
+※ 操作中に
+HTTP Status 500 - org.hibernate.exception.JDBCConnectionException: Unable to acquire JDBC Connection
+
+が出た際はお手数ですがページをリロードして頂くと遷移すると思われます。
+
+
 # Dependency
 - Java SE Development Kit 11
 - Eclipse Java EE IDE for Web Developers 4.6.3
