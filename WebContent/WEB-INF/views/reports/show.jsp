@@ -51,7 +51,7 @@
                         </tr>
                     </tbody>
                 </table>
-                いいね数： <div id="favorite">${favorites_count}</div>
+                <div id="favorite">いいね数：${favorites_count}</div>
 
                 <c:if test="${sessionScope.login_employee.id == report.employee.id }">
                     <p><a href="<c:url value="/reports/edit?id=${report.id }" />">この日報を編集する</a></p>
@@ -115,7 +115,7 @@
                         $("#btn-a").text("いいね解除");
                         var fav = $("#favorites_count").val();
                         fav++;
-                        $("#favorite").html(fav);
+                        $("#favorite").html("いいね数：" + fav);
                         $("#favorites_count").attr('value', fav);
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown)
@@ -150,7 +150,7 @@
                         $("#btn-a").text("いいね");
                         var fav = $("#favorites_count").val();
                         fav--;
-                        $("#favorite").html(fav);
+                        $("#favorite").html("いいね数：" + fav);
                         $("#favorites_count").attr('value', fav);
                     },
                     error : function(XMLHttpRequest, textStatus, errorThrown)
